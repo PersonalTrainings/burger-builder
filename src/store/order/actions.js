@@ -1,6 +1,4 @@
 import * as types from './actionTypes'
-import axios from '../../axios-orders'
-import { ordersRef } from '../../firebase'
 
 export const purchaseBurgerSuccess = (id, orderData) => {
   return {
@@ -16,16 +14,17 @@ export const purchaseBurgerFailed = (error) => {
   }
 }
 
+export const purchaseBurgerStart = () => {
+  return {
+    type: types.PURCHASE_BURGER_START
+  }
+}
+
 export const purchaseBurger = (orderData, token) => {
-  return dispatch => {
-    dispatch({type: types.PURCHASE_BURGER_START})
-    axios.post(`/orders.json?auth=${token}`, orderData)
-      .then(response => {
-        dispatch(purchaseBurgerSuccess(response.data.name, orderData))        
-      })
-      .catch(err => {
-        dispatch(purchaseBurgerFailed(err))
-      })
+  return {
+    type: types.PURCHASE_BURGER,
+    orderData,
+    token
   }
 }
 
@@ -43,32 +42,30 @@ export const fetchOrdersStartFailed = (error) => {
   }
 }
 
-export const fetchOrders = (token, userId) => {
-  return dispatch => {
-    dispatch({ type: types.FETCH_ORDERS_START })
-    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`
-    axios.get(`/orders.json${queryParams}`)
-      .then(res => {
-        const fetchedOrders = []
-        for (let key in res.data) {
-          fetchedOrders.push({
-            ...res.data[key],
-            id: key
-          })
-        }
-        dispatch(fetchOrdersStartSuccess(fetchedOrders))
-      })
-      .catch(err => {
-        dispatch(fetchOrdersStartFailed(err))
-      })
+export const fetchedOrdersStart = () => {
+  return {
+    type: types.FETCH_ORDERS_START
+  }
+}
 
+export const fetchOrders = (token, userId) => {
+  return {
+    type: types.FETCH_ORDERS,
+    token,
+    userId
+  }
+}
+
+export const removeOrderSuccess = (id) => {
+  return {
+    type: types.REMOVE_ORDER_SUCCESS, payload: {id}
   }
 }
 
 export const removeOrder = id => {
-  return dispatch => {
-    ordersRef.child(id).remove()
-    dispatch({type: types.REMOVE_ORDER, payload: {id}})
+  return {
+    type: types.REMOVE_ORDER,
+    id
   }
 }
 

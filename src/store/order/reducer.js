@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
     case types.FETCH_ORDERS_SUCCESS: return fetchOredersSuccess(state, action)      
     case types.FETCH_ORDERS_ERROR: return fetchOredersError(state, action)
 
-    case types.REMOVE_ORDER: return removeOrder(state, action)
+    case types.REMOVE_ORDER_SUCCESS: return removeOrder(state, action)
       
     default: return state
   }

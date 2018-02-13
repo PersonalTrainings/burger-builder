@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { initIngredients, removeIngredinet, addIngredient } from '../../store/burgerBuilder/actions'
+import { fetchIngredients, removeIngredinet, addIngredient } from '../../store/burgerBuilder/actions'
 import { purchaseInit } from '../../store/order/actions'
 import { setAuthRedirectPath } from '../../store/auth/actions'
 
@@ -20,7 +20,7 @@ class BurgerBuilder extends Component {
 
   
   componentDidMount() {
-    this.props.dispatch(initIngredients())
+    this.props.dispatch(fetchIngredients())
   }
 
   addIngredient = ingredientName => {
