@@ -4,7 +4,7 @@ import axios from '../../axios-orders'
 import { ordersRef } from '../../firebase'
 import * as actions from '../order/actions'
 
-export function* purchaseOrderSaga (action) {
+export function* purchaseBurgerSaga (action) {
   yield put(actions.purchaseBurgerStart())
   try {
     const response = yield axios.post(`/orders.json?auth=${action.token}`, action.orderData)

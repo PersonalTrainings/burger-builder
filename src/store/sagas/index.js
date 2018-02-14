@@ -1,5 +1,5 @@
 
-import { takeEvery } from 'redux-saga/effects'
+import { takeEvery, all } from 'redux-saga/effects'
 
 import * as authTypes from '../auth/actionTypes'
 import * as burgerBuilderTypes from '../burgerBuilder/actionTypes'
@@ -12,20 +12,28 @@ import { logoutSaga,
 
 import { fetchIngredientsSaga } from './burgerBuilder'
 
-import { purchaseOrderSaga,
+import { purchaseBurgerSaga,
          fetchOrdersSaga,
          removeOrderSaga } from './order'
 
 export function* watchAuth () {
-  yield takeEvery(authTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga)
-  yield takeEvery(authTypes.AUTH_INITIATE_LOGOUT, logoutSaga)
-  yield takeEvery(authTypes.AUTH_USER, authUserSaga)
-  yield takeEvery(authTypes.AUTH_CHECK_STATE, authCheckStateSaga)
+  yield all([
+    takeEvery(authTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga),
+    takeEvery(authTypes.AUTH_INITIATE_LOGOUT, logoutSaga),
+    takeEvery(authTypes.AUTH_USER, authUserSaga),
+    takeEvery(authTypes.AUTH_CHECK_STATE, authCheckStateSaga)
+  ])
+}
 
+export function* watchBurgerBuilder () {
   yield takeEvery(burgerBuilderTypes.FETCH_INGREDIENTS, fetchIngredientsSaga)
+}
 
-  yield takeEvery(orderTypes.PURCHASE_BURGER, purchaseOrderSaga)
-  yield takeEvery(orderTypes.FETCH_ORDERS, fetchOrdersSaga)
-  yield takeEvery(orderTypes.REMOVE_ORDER, removeOrderSaga)
+export function* watchOrder () {
+  yield all([
+    takeEvery(orderTypes.PURCHASE_BURGER, purchaseBurgerSaga),
+    takeEvery(orderTypes.FETCH_ORDERS, fetchOrdersSaga),
+    takeEvery(orderTypes.REMOVE_ORDER, removeOrderSaga)
+  ])
 }
 

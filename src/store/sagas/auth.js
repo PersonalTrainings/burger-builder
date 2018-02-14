@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga'
-import { put } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 
 import axios from 'axios'
 import * as actions from '../auth/actions'
@@ -8,9 +8,9 @@ const API_KEY = 'AIzaSyDS6ROlvggkPNK1k-cw9M4CNggWdrl6CqQ'
 const AUTH_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
 
 export function* logoutSaga (action) {
-  yield localStorage.removeItem('token')
-  yield localStorage.removeItem('expirationDate')
-  yield localStorage.removeItem('userId')
+  yield call([localStorage, 'removeItem'], 'token')
+  yield call([localStorage, 'removeItem'], 'expirationDate')
+  yield call([localStorage, 'removeItem'], 'userId')
   yield put(actions.logoutSucceed())
 }
 
